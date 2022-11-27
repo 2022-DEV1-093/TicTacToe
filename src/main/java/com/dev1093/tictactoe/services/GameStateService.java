@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.dev1093.tictactoe.constants.Constants.*;
+
 @Service
 public class GameStateService
 {
@@ -53,7 +55,7 @@ public class GameStateService
 
     public void updateState(String position, Player player) {
         if (this.board.get(position) != null) {
-            throw new InvalidChoiceException("The position has already been taken");
+            throw new InvalidChoiceException(POSITION_TAKEN);
         }
         this.board.put(position, player.getId());
         this.previousPlayerId = player.getId();
@@ -91,15 +93,15 @@ public class GameStateService
             default:
                 break;
             }
-            if ("XXX".equals(line)) {
-                return "X";
-            } else if ("OOO".equals(line)) {
-                return "O";
+            if (X_WINS.equals(line)) {
+                return X;
+            } else if (O_WINS.equals(line)) {
+                return O;
             }
         }
 
         if(this.board.values().stream().filter(Objects::nonNull).collect(Collectors.toList()).size() == 9) {
-            return "draw";
+            return DRAW;
         }
         return null;
     }
